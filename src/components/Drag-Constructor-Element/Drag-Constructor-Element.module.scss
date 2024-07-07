@@ -1,0 +1,12 @@
+.ingredient {
+  display: flex;
+  align-items: center;
+  position: relative;
+  &.dashed {
+    border: 2px dashed gray;
+  }
+}
+
+.drag {
+  position: absolute;
+}

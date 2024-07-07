@@ -1,0 +1,33 @@
+.content {
+  display: flex;
+  justify-self: stretch;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--background);
+  border-radius: var(--common-border-radius-s);
+}
+
+.image {
+  width: 520px;
+  height: 240px;
+  display: flex;
+  justify-content: center;
+}
+
+ul.parts {
+  padding: 0;
+  list-style: none;
+  font-size: larger;
+  display: flex;
+  flex-direction: row;
+  li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      display: inline;
+      padding: 0;
+      margin: 0;
+    }
+  }
+}

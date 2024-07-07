@@ -1,0 +1,42 @@
+.notification {
+  position: absolute;
+  right: 0;
+  top: 0px;
+  color: white;
+  border-radius: 0 0 0 var(--common-border-radius-s);
+  &.error {
+    background-color: var(--colors-interface-error);
+  }
+  &.success {
+    background-color: var(--colors-interface-success);
+  }
+}
+
+.appearing {
+  animation-duration: 0.5s;
+  animation-name: slidein;
+}
+
+.hiding {
+  display: none;
+}
+
+@keyframes slidein {
+  from {
+    top: -30px;
+  }
+
+  to {
+    top: 0;
+  }
+}
+
+@keyframes slideout {
+  from {
+    top: 0px;
+  }
+
+  to {
+    top: -30px;
+  }
+}

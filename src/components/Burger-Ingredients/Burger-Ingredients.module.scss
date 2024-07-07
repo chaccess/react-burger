@@ -1,0 +1,23 @@
+.tabs {
+	display: flex;
+}
+
+.constr {
+	width: 600px;
+}
+
+.ingredients {
+	display: flex;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	*:last-child {
+		margin-right: 0px;
+	}
+}
+
+.scroll-pane {
+	overflow-y: auto;
+	scrollbar-color: #8585ad var(--background-alt);
+	scrollbar-width: thin;
+	height: calc(100% - 156px);
+}
