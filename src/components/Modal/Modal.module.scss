@@ -1,8 +1,15 @@
 .modal {
-  position: absolute;
-  min-width: 300px;
-  min-height: 100px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 101;
+  width: 640px;
+  margin: auto;
+  padding: 40px 40px 60px;
+  box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04),
+    0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04),
+    0px 0px 1px rgba(0, 0, 0, 0.04);
   border-radius: var(--common-border-radius-s);
   background-color: var(--background);
 }

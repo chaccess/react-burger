@@ -95,9 +95,6 @@ export const BurgerConstructor = () => {
 
   const additionalClass = isHover ? styles.dashed : "";
   let fixPositionCallBack: () => void;
-  const fixPositionPromise = new Promise<void>(function (resolve) {
-    fixPositionCallBack = resolve;
-  });
 
   return (
     <section className={`${styles.constr} pt-25 pl-4 ml-10`}>
@@ -180,7 +177,6 @@ export const BurgerConstructor = () => {
             dispatch(clearOrder());
             dispatch(clearConstructor());
           }}
-          fixPositionPromise={fixPositionPromise}
         >
           <OrderDetails
             fixPositionCallback={fixPositionCallBack!}

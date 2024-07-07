@@ -18,26 +18,24 @@ export const BurgerIngredients = () => {
   const scrollPane = useRef(null);
   const [currentTab, setCurrentTab] = useState<FillingType>("bun");
   const ingredientInModal = useAppSelector((state) => state.current);
+  const ingtomap = [
+    { value: "bun" as FillingType, title: "Булки" },
+    { value: "sauce" as FillingType, title: "Соусы" },
+    { value: "main" as FillingType, title: "Начинки" },
+  ];
 
   useEffect(() => {
     const scrollPaneElement =
       scrollPane.current !== null ? (scrollPane.current as HTMLElement) : null;
+
+    if (!scrollPaneElement) return;
+
+    scrollPaneElement.addEventListener("scroll", highLightTab);
+
     return () => {
-      if (scrollPaneElement) {
-        scrollPaneElement.removeEventListener("scroll", highLightTab);
-      }
+      scrollPaneElement.removeEventListener("scroll", highLightTab);
     };
   }, []);
-
-  const scrollPaneExists = scrollPane.current !== null;
-
-  useEffect(() => {
-    const scrollPaneElement =
-      scrollPane.current !== null ? (scrollPane.current as HTMLElement) : null;
-    if (scrollPaneElement) {
-      scrollPaneElement.addEventListener("scroll", highLightTab);
-    }
-  }, [scrollPaneExists]);
 
   function highLightTab() {
     if (!scrollPane.current) {
@@ -89,11 +87,7 @@ export const BurgerIngredients = () => {
           Соберите бургер
         </header>
         <nav className={`${styles.tabs} mb-10`}>
-          {[
-            { value: "bun" as FillingType, title: "Булки" },
-            { value: "sauce" as FillingType, title: "Соусы" },
-            { value: "main" as FillingType, title: "Начинки" },
-          ].map(({ value, title }) => (
+          {ingtomap.map(({ value, title }) => (
             <Tab
               active={value === currentTab}
               value={value}
