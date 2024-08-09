@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom";
 import styles from "./Modal.module.scss";
 import { ModalOverlay } from "../Modal-Overlay/Modal-Overlay";
-import { ReactNode, useEffect } from "react";
+import { FC, ReactNode, useEffect } from "react";
 import { linkHandler } from "../../utils/common";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -17,12 +17,12 @@ interface ModalPropTypes {
   hideClose?: boolean;
 }
 
-export const Modal = ({
+export const Modal: FC<ModalPropTypes> = ({
   closeModal,
   children,
   title,
   hideClose = false,
-}: ModalPropTypes) => {
+}) => {
   const handlerKeyPress = (e: KeyboardEvent) => {
     if (e.code === "Escape") {
       closeModal();

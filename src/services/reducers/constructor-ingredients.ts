@@ -1,60 +1,60 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IIngredient } from "../../types/ingredient";
-import { IngredientWithUniqId } from "../../types/ingredientWithUniqId";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { IIngredient } from '../../types/application-types/ingredient';
+import { IngredientWithUniqId } from '../../types/application-types/ingredient-with-uniq-id';
 
-type ConstructorIngredientsType = {
-  bun: IIngredient | null;
-  ingredients: IngredientWithUniqId[];
+export type ConstructorIngredientsState = {
+	bun: IIngredient | null;
+	ingredients: IngredientWithUniqId[];
 };
-const initialState: ConstructorIngredientsType = {
-  bun: null,
-  ingredients: [],
+const initialState: ConstructorIngredientsState = {
+	bun: null,
+	ingredients: [],
 };
 const constructorIngredients = createSlice({
-  name: "constructor-ingredients",
-  initialState: initialState,
-  reducers: {
-    addIngredient: (
-      state: ConstructorIngredientsType,
-      action: PayloadAction<IngredientWithUniqId>
-    ) => ({
-      ...state,
-      ingredients: [...state.ingredients, action.payload],
-    }),
-    removeIngredient: (
-      state: ConstructorIngredientsType,
-      action: PayloadAction<string>
-    ) => ({
-      ...state,
-      ingredients: state.ingredients.filter(
-        ({ uniqId }) => uniqId !== action.payload
-      ),
-    }),
-    changeOrder: (
-      state: ConstructorIngredientsType,
-      action: PayloadAction<{
-        fromIndex: number;
-        toIndex: number;
-      }>
-    ) => {
-      const { fromIndex, toIndex } = action.payload;
-      const ingredients = [...state.ingredients];
-      ingredients.splice(toIndex, 0, ingredients.splice(fromIndex, 1)[0]);
-      return {
-        ...state,
-        ingredients,
-      };
-    },
-    setBun: (
-      state: ConstructorIngredientsType,
-      action: PayloadAction<IIngredient>
-    ) => ({
-      ...state,
-      bun: action.payload,
-    }),
-    clear: () => initialState,
-  },
+	name: 'constructor-ingredients',
+	initialState: initialState,
+	reducers: {
+		addIngredient: (
+			state: ConstructorIngredientsState,
+			action: PayloadAction<IngredientWithUniqId>
+		) => ({
+			...state,
+			ingredients: [...state.ingredients, action.payload],
+		}),
+		removeIngredient: (
+			state: ConstructorIngredientsState,
+			action: PayloadAction<string>
+		) => ({
+			...state,
+			ingredients: state.ingredients.filter(
+				({ uniqId }) => uniqId !== action.payload
+			),
+		}),
+		changeOrder: (
+			state: ConstructorIngredientsState,
+			action: PayloadAction<{
+				fromIndex: number;
+				toIndex: number;
+			}>
+		) => {
+			const { fromIndex, toIndex } = action.payload;
+			const ingredients = [...state.ingredients];
+			ingredients.splice(toIndex, 0, ingredients.splice(fromIndex, 1)[0]);
+			return {
+				...state,
+				ingredients,
+			};
+		},
+		setBun: (
+			state: ConstructorIngredientsState,
+			action: PayloadAction<IIngredient>
+		) => ({
+			...state,
+			bun: action.payload,
+		}),
+		clear: () => initialState,
+	},
 });
 export const { addIngredient, setBun, removeIngredient, changeOrder, clear } =
-  constructorIngredients.actions;
+	constructorIngredients.actions;
 export { constructorIngredients };
