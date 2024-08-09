@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 import styles from "./My-Notificaiton.module.scss";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 const notificationContainer = document.getElementById("notification");
 if (notificationContainer === null) {
@@ -12,11 +12,11 @@ interface MyNotificationPropTypes {
   message: string;
 }
 
-export const MyNotification = ({
+export const MyNotification: FC<MyNotificationPropTypes> = ({
   success,
   message,
-}: MyNotificationPropTypes) => {
-  const [showing, setShowing] = useState(true);
+}) => {
+  const [showing, setShowing] = useState<boolean>(true);
   const additionalClass = success ? styles.success : styles.error;
   const additionalClass2 = showing ? styles.appearing : styles.hiding;
   useEffect(() => {

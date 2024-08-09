@@ -3,19 +3,20 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./Ingredient.module.scss";
-import { IIngredient } from "../../types/ingredient";
+import { IIngredient } from "../../types/application-types/ingredient";
 import { useDrag } from "react-dnd";
-import { setCurrentItem } from "../../services/reducers/current-ingredient";
-import { useAppDispatch } from "../../hooks/redux";
+import { useLocation, useNavigate } from "react-router";
+import { FC } from "react";
 
 interface IngredientPropTypes {
   ingredient: IIngredient;
   count: number;
 }
 
-export const Ingredient = ({ ingredient, count }: IngredientPropTypes) => {
+export const Ingredient: FC<IngredientPropTypes> = ({ ingredient, count }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { price, name, image } = ingredient;
-  const dispatch = useAppDispatch();
   const [, dragRef] = useDrag({
     type: "ingredient",
     item: ingredient,
@@ -35,7 +36,13 @@ export const Ingredient = ({ ingredient, count }: IngredientPropTypes) => {
           }}
           src={image}
           className={`mb-1 ${styles.image}`}
-          onClick={() => dispatch(setCurrentItem(ingredient))}
+          onClick={() =>
+            navigate(`/ingredients/${ingredient._id}`, {
+              state: {
+                background: location,
+              },
+            })
+          }
           alt={name}
         />
         <p className={`${styles.price} text text_type_digits-default mb-1`}>

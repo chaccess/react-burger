@@ -1,17 +1,32 @@
+import { useLocation, useParams } from "react-router";
 import styles from "./Ingredient-Details.module.scss";
-import { IIngredient } from "../../types/ingredient";
+import { useAppSelector } from "../../hooks/redux";
+import { AppState } from "../../services/store";
+import { FC } from "react";
 
-export const IngredientDetails = ({
-  imageLarge,
-  name,
-  calories,
-  carbohydrates,
-  fat,
-  proteins,
-}: IIngredient) => {
+export const IngredientDetails: FC = () => {
+  const { id } = useParams() || "";
+  const location = useLocation();
+  const background = location.state && location.state.background;
+  const isInModal = !!background;
+
+  const { success, ingredients } = useAppSelector(
+    (state: AppState) => state.ingredients
+  );
+  if (!success) {
+    return null;
+  }
+  const { imageLarge, name, calories, proteins, fat, carbohydrates } =
+    ingredients.filter(({ ingredient }) => ingredient._id === id)[0].ingredient;
+
   const digitClass = "text text_type_digits-default";
+  const additionalClass = isInModal ? styles["modal-border"] : "";
+
   return (
-    <section className={`${styles.content} pr-10 pl-10`}>
+    <section className={`${styles.content} ${additionalClass} pr-10 pl-10`}>
+      {!isInModal && (
+        <p className="text text_type_main-large mt-30">Детали ингредиента</p>
+      )}
       <section className={`${styles.image} mb-4`}>
         <img src={imageLarge} alt={name} />
       </section>

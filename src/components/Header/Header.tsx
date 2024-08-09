@@ -1,3 +1,4 @@
+import { FC } from "react";
 import styles from "./Header.module.scss";
 import {
   BurgerIcon,
@@ -6,7 +7,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-export const AppHeader = () => {
+export const AppHeader: FC = () => {
   const itemCss = "p-5 mt-4 mb-4";
   return (
     <header className={styles.header}>

@@ -1,0 +1,29 @@
+.content {
+	display: flex;
+	flex-direction: row;
+	justify-content: start;
+	width: 100%;
+}
+
+.menu {
+	width: 400px;
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	> ul {
+		padding: 0;
+		> li {
+			list-style: none;
+			cursor: pointer;
+		}
+	}
+}
+
+.link {
+	text-decoration: none;
+}
+
+.body {
+	display: flex;
+	flex-direction: column;
+}

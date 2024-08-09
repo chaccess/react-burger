@@ -2,10 +2,10 @@ import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IIngredient } from "../../types/ingredient";
+import { IIngredient } from "../../types/application-types/ingredient";
 import styles from "./Drag-Constructor-Element.module.scss";
-import { XYCoord, useDrag, useDrop } from "react-dnd";
-import { useRef } from "react";
+import { DragSourceMonitor, XYCoord, useDrag, useDrop } from "react-dnd";
+import { FC, useRef } from "react";
 import type { Identifier } from "dnd-core";
 import { changeOrder } from "../../services/reducers/constructor-ingredients";
 import { useAppDispatch } from "../../hooks/redux";
@@ -22,12 +22,12 @@ interface DragItem {
   index: number;
 }
 
-export const DragConstructorElement = ({
+export const DragConstructorElement: FC<DragConstructorElementPropTypes> = ({
   ingredient,
   handleClose,
   uniqId,
   index,
-}: DragConstructorElementPropTypes) => {
+}) => {
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLElement>(null);
   const [{ handlerId }, drop] = useDrop<
@@ -94,7 +94,9 @@ export const DragConstructorElement = ({
   const [{ isDragging }, drag] = useDrag({
     type: "constr",
     item: { uniqId, index },
-    collect: (monitor: any) => ({
+    collect: (
+      monitor: DragSourceMonitor<{ uniqId: string; index: number }, unknown>
+    ) => ({
       isDragging: monitor.isDragging(),
     }),
   });

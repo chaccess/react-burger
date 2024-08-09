@@ -1,41 +1,35 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./Burger-Ingredients.module.scss";
 import { Ingredient } from "../Ingredient/Ingredient";
-import { useEffect, useRef, useState } from "react";
-import { FillingType } from "../../types/fillingType";
-import { IngredientDetails } from "../Ingredient-Details/Ingredient-Details";
-import { Modal } from "../Modal/Modal";
-import { clearCurrentItem } from "../../services/reducers/current-ingredient";
-import { MyNotification } from "../My-Notification/My-Notification";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { FC, useEffect, useRef, useState } from "react";
+import { FillingType } from "../../types/application-types/filling-type";
+import { useAppSelector } from "../../hooks/redux";
 
-export const BurgerIngredients = () => {
-  const { loading, success, ingredients } = useAppSelector(
-    (state) => state.ingredients
-  );
+export const BurgerIngredients: FC = () => {
+  const { ingredients } = useAppSelector((state) => state.ingredients);
 
-  const dispatch = useAppDispatch();
-  const scrollPane = useRef(null);
+  const scrollPane = useRef<HTMLElement>(null);
   const [currentTab, setCurrentTab] = useState<FillingType>("bun");
-  const ingredientInModal = useAppSelector((state) => state.current);
-  const ingtomap = [
-    { value: "bun" as FillingType, title: "Булки" },
-    { value: "sauce" as FillingType, title: "Соусы" },
-    { value: "main" as FillingType, title: "Начинки" },
-  ];
 
   useEffect(() => {
     const scrollPaneElement =
       scrollPane.current !== null ? (scrollPane.current as HTMLElement) : null;
-
-    if (!scrollPaneElement) return;
-
-    scrollPaneElement.addEventListener("scroll", highLightTab);
-
     return () => {
-      scrollPaneElement.removeEventListener("scroll", highLightTab);
+      if (scrollPaneElement) {
+        scrollPaneElement.removeEventListener("scroll", highLightTab);
+      }
     };
   }, []);
+
+  const scrollPaneExists = scrollPane.current !== null;
+
+  useEffect(() => {
+    const scrollPaneElement =
+      scrollPane.current !== null ? (scrollPane.current as HTMLElement) : null;
+    if (scrollPaneElement) {
+      scrollPaneElement.addEventListener("scroll", highLightTab);
+    }
+  }, [scrollPaneExists]);
 
   function highLightTab() {
     if (!scrollPane.current) {
@@ -66,28 +60,16 @@ export const BurgerIngredients = () => {
 
   return (
     <>
-      {success && (
-        <MyNotification success={true} message={"Данные загружены"} />
-      )}
-      {success === false && (
-        <MyNotification
-          success={false}
-          message={"Данные не удалось подгрузить"}
-        />
-      )}
-      {loading && (
-        <Modal title="" closeModal={() => {}} hideClose={true}>
-          <div className={`${styles.loading}`}>
-            <p className="text text_type_main-medium p-15">Загрузка...</p>
-          </div>
-        </Modal>
-      )}
       <section className={`mt-10 ${styles.constr}`}>
         <header className={`mb-5 text text_type_main-large`}>
           Соберите бургер
         </header>
         <nav className={`${styles.tabs} mb-10`}>
-          {ingtomap.map(({ value, title }) => (
+          {[
+            { value: "bun" as FillingType, title: "Булки" },
+            { value: "sauce" as FillingType, title: "Соусы" },
+            { value: "main" as FillingType, title: "Начинки" },
+          ].map(({ value, title }) => (
             <Tab
               active={value === currentTab}
               value={value}
@@ -131,14 +113,6 @@ export const BurgerIngredients = () => {
           </section>
         </section>
       </section>
-      {ingredientInModal && (
-        <Modal
-          title="Детали ингредиента"
-          closeModal={() => dispatch(clearCurrentItem())}
-        >
-          <IngredientDetails {...ingredientInModal} />
-        </Modal>
-      )}
     </>
   );
 };
