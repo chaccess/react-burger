@@ -6,8 +6,9 @@ import {
   Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { FC } from "react";
 
-export const AppHeader = () => {
+export const AppHeader : FC = () => {
   const location = useLocation();
   const { pathname: path } = location;
   const itemCss = "p-5 mt-4 mb-4";
