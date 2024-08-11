@@ -15,7 +15,7 @@ export const BurgerIngredients = () => {
   );
 
   const dispatch = useAppDispatch();
-  const scrollPane = useRef(null);
+  const scrollPanel = useRef(null);
   const [currentTab, setCurrentTab] = useState<FillingType>("bun");
   const ingredientInModal = useAppSelector((state) => state.current);
   const ingtomap = [
@@ -26,24 +26,35 @@ export const BurgerIngredients = () => {
 
   useEffect(() => {
     const scrollPaneElement =
-      scrollPane.current !== null ? (scrollPane.current as HTMLElement) : null;
-
-    if (!scrollPaneElement) return;
-
-    scrollPaneElement.addEventListener("scroll", highLightTab);
-
+      scrollPanel.current !== null
+        ? (scrollPanel.current as HTMLElement)
+        : null;
     return () => {
-      scrollPaneElement.removeEventListener("scroll", highLightTab);
+      if (scrollPaneElement) {
+        scrollPaneElement.removeEventListener("scroll", highLightTab);
+      }
     };
   }, []);
 
+  const scrollPaneExists = scrollPanel.current !== null;
+
+  useEffect(() => {
+    const scrollPaneElement =
+      scrollPanel.current !== null
+        ? (scrollPanel.current as HTMLElement)
+        : null;
+    if (scrollPaneElement) {
+      scrollPaneElement.addEventListener("scroll", highLightTab);
+    }
+  }, [scrollPaneExists]);
+
   function highLightTab() {
-    if (!scrollPane.current) {
+    if (!scrollPanel.current) {
       return;
     }
-    const pane = scrollPane.current as HTMLElement;
-    const paneRect = pane.getBoundingClientRect();
-    const headers = pane.querySelectorAll("header");
+    const panel = scrollPanel.current as HTMLElement;
+    const paneRect = panel.getBoundingClientRect();
+    const headers = panel.querySelectorAll("header");
     let nearestHeader: HTMLElement = headers[0];
     let min = Math.abs(paneRect.top - headers[0].getBoundingClientRect().top);
     for (let i = 1; i < headers.length; i++) {
@@ -98,7 +109,7 @@ export const BurgerIngredients = () => {
             </Tab>
           ))}
         </nav>
-        <section className={styles["scroll-pane"]} ref={scrollPane}>
+        <section className={styles["scroll-pane"]} ref={scrollPanel}>
           <header className="text text_type_main-medium" data-value="bun">
             Булки
           </header>
