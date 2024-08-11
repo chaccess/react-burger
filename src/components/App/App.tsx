@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 const marginFromEnd = 10;
 
-//для коммита
 function App() {
   const { loading: isLoading } = useAppSelector((state) => state.ingredients);
   const disp = useAppDispatch();
