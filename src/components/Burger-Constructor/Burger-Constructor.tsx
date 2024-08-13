@@ -6,7 +6,7 @@ import {
 import styles from "./Burger-Constructor.module.scss";
 import { OrderDetails } from "../Order-Details/Order-Details";
 import { Modal } from "../Modal/Modal";
-import { IIngredient } from "../../types/ingredient";
+import { IIngredient } from "../../types/application-types/ingredient";
 import { useDrop } from "react-dnd";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
@@ -16,7 +16,7 @@ import {
 } from "../../services/reducers/constructor-ingredients";
 import { decreaseItem } from "../../services/reducers/ingredients";
 import { DragConstructorElement } from "../Drag-Constructor-Element/Drag-Constructor-Element";
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 import { sendOrder } from "../../services/actions/order";
 import { MyNotification } from "../My-Notification/My-Notification";
 import { clearOrder } from "../../services/reducers/order";
@@ -27,13 +27,17 @@ import {
   increaseItem,
   removeBun as removeBunInIngredients,
 } from "../../services/reducers/ingredients";
+import { useNavigate } from "react-router";
 
-export const BurgerConstructor = () => {
+export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { bun, ingredients } = useAppSelector(
     (state) => state["constructor-ingredients"]
   );
+
+  const { user } = useAppSelector((state) => state.user);
 
   const { loading, success, order } = useAppSelector((state) => state.order);
 
@@ -63,6 +67,10 @@ export const BurgerConstructor = () => {
   };
 
   const createOrder = () => {
+    if (user === null) {
+      navigate("/login");
+      return;
+    }
     const ids: string[] = [
       bun!._id,
       ...ingredients.map(({ ingredient }) => ingredient._id),
