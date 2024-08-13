@@ -20,6 +20,8 @@ import { NotFound } from "../../pages/NotFound";
 
 const marginFromEnd = 10;
 
+//для коммита спринт 4
+//делал типизацию сразу, поэтому нет изменений
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
