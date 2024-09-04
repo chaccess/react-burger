@@ -1,0 +1,27 @@
+.container {
+  background: linear-gradient(-135deg, #5445f3, #7821be);
+  padding-left: 2px;
+  padding-top: 2px;
+  width: 60px;
+  height: 60px;
+  border-radius: 33px;
+  display: inline-block;
+}
+
+.ingredient-circle {
+  display: inline-block;
+  background-color: black;
+  background-position: -20px;
+  background-size: 100px;
+  background-repeat: no-repeat;
+  width: 58px;
+  height: 58px;
+  border-radius: 30px;
+  margin-left: 0px;
+  margin-top: 0px;
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

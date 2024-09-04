@@ -11,3 +11,5 @@ export const accessToken = "accessToken";
 export const passwordReset = "password-reset";
 export const changePassword = "password-reset/reset";
 export const resetPasswordCalled = "resetPasswordCalled";
+export const ordersAll = "wss://norma.nomoreparties.space/orders/all";
+export const ordersPrivate = "wss://norma.nomoreparties.space/orders";

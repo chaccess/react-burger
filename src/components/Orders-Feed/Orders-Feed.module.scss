@@ -1,0 +1,12 @@
+.orders-feed {
+  width: 600px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-color: #8585ad var(--background-alt);
+  scrollbar-width: thin;
+  height: calc(100% - 60px);
+}

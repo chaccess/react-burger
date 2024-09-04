@@ -1,0 +1,12 @@
+.orders-list {
+	padding: 0;
+	li {
+		list-style: none;
+		cursor: pointer;
+	}
+
+	overflow-x: hidden;
+	overflow-y: auto;
+	scrollbar-color: #8585ad var(--background-alt);
+	scrollbar-width: thin;
+}

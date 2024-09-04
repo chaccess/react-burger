@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom";
 import styles from "./Modal.module.scss";
 import { ModalOverlay } from "../Modal-Overlay/Modal-Overlay";
-import { FC, ReactNode, useEffect } from "react";
+import { createContext, FC, ReactNode, useEffect } from "react";
 import { linkHandler } from "../../utils/common";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -16,6 +16,10 @@ interface ModalPropTypes {
   title: string;
   hideClose?: boolean;
 }
+
+export const ModalContext = createContext({
+  setPosition: () => {},
+});
 
 export const Modal: FC<ModalPropTypes> = ({
   closeModal,

@@ -12,8 +12,12 @@ import { OrderRequest } from "../types/requests/order-request";
 import { LogoutRequest } from "../types/requests/logout-request";
 import { SimpleResponse } from "../types/responses/simple-response";
 import { ApplicationResponse } from "../types/responses/response-type";
+import {
+  OrderInFeed,
+  OrderStatus,
+} from "../types/application-types/order-in-feed";
 
-const refreshAccessToken = async () => {
+export const refreshAccessToken = async () => {
   const axiosInstance = axios.create();
   const { data: result } = await axiosInstance<RefreshTokenResponse>(
     `${baseUrl}${token}`,
@@ -48,6 +52,7 @@ axios.interceptors.response.use(
       originalRequest._retry = true;
       const accessToken = await refreshAccessToken();
       axios.defaults.headers.common["Authorization"] = accessToken;
+      originalRequest.headers["Authorization"] = accessToken;
       return axios(originalRequest);
     }
     return Promise.reject(error);
@@ -58,7 +63,6 @@ export const linkHandler = (
   e: SyntheticEvent<HTMLAnchorElement>,
   callback: () => void
 ) => {
-  //чтобы не было перехода по ссылке
   e.preventDefault();
   callback();
 };
@@ -115,4 +119,24 @@ export const request = async <T extends ApplicationResponse>(
     headers: headers,
   });
   return (await checkResponse(response)) as T;
+};
+
+const map = new Map<OrderStatus, string>([
+  ["done", "Готов"],
+  ["pending", "Готовится"],
+  ["cancelled", "Отменён"],
+  ["created", "Создан"],
+]);
+
+export const getStatus = (status: OrderStatus) => map.get(status);
+
+export const sortByDateReversed = (a: OrderInFeed, b: OrderInFeed) => {
+  const dateA = new Date(a.createdAt);
+  const dateB = new Date(b.createdAt);
+  if (dateA < dateB) {
+    return 1;
+  } else if (dateA > dateB) {
+    return -1;
+  }
+  return 0;
 };

@@ -17,11 +17,13 @@ import { Profile } from "../../pages/Profile";
 import { getUser } from "../../services/actions/user";
 import { OnlyAuth, OnlyUnAuth } from "../Protected-Route";
 import { NotFound } from "../../pages/NotFound";
+import { Feed } from "../../pages/Feed";
+import { OrderPage } from "../../pages/OrderPage/OrderPage";
+import { ProfileOrders } from "../../pages/ProfileOrders";
+import { ProfileIndex } from "../../pages/ProfileIndex";
 
 const marginFromEnd = 10;
 
-//для коммита спринт 4
-//делал типизацию сразу, поэтому нет изменений
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -43,7 +45,6 @@ function App() {
   };
 
   const handleModalClose = () => {
-    // Возвращаемся к предыдущему пути при закрытии модалки
     navigate(-1);
   };
 
@@ -95,15 +96,15 @@ function App() {
             element={<OnlyUnAuth component={<ResetPassword />} />}
           />
           <Route path="/profile" element={<OnlyAuth component={<Profile />} />}>
-            <Route
-              path="orders"
-              element={<OnlyAuth component={<Profile />} />}
-            />
-            <Route
-              path="orders/:number"
-              element={<OnlyAuth component={<Profile />} />}
-            />
+            <Route index element={<ProfileIndex />} />
+            <Route path="orders" element={<ProfileOrders />} />
           </Route>
+          <Route
+            path="/profile/orders/:number"
+            element={<OnlyAuth component={<OrderPage />} />}
+          />
+          <Route path="/feed" element={<Feed />} />
+          <Route path="/feed/:number" element={<OrderPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         {background && (
@@ -122,6 +123,11 @@ function App() {
                   </>
                 )
               }
+            />
+            <Route path="/feed/:number" element={<OrderPage />} />
+            <Route
+              path="/profile/orders/:number"
+              element={<OnlyAuth component={<OrderPage />} />}
             />
           </Routes>
         )}
