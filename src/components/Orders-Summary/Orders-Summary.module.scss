@@ -1,0 +1,33 @@
+.orders-summary {
+	min-width: 566px;
+	display: flex;
+	flex-direction: row;
+	section {
+		flex-grow: 1;
+	}
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	overflow-x: auto;
+	scrollbar-color: #8585ad var(--background-alt);
+	scrollbar-width: thin;
+	height: calc(100% - 100px);
+}
+
+.number {
+	text-shadow: var(--colors-interface-accent) 1px 0 10px;
+}
+
+.columns {
+	display: flex;
+	flex-direction: row;
+
+	.column {
+		p:last-child {
+			margin-bottom: 0;
+		}
+	}
+}

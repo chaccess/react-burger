@@ -9,8 +9,6 @@ export const getIngredients = createAsyncThunk(
       const response = await getIngredientsApi();
       return response.data.map(convert);
     } catch (e) {
-      //Так как эта функция объявлена как async её возвращаемый результат будет типа Promise.
-      //Выбрасывание здесь ошибки зареджектит этот промис
       throw new Error(`Ошибка ${e}`);
     }
   }

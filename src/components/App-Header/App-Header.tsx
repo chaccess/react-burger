@@ -8,7 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FC } from "react";
 
-export const AppHeader : FC = () => {
+export const AppHeader: FC = () => {
   const location = useLocation();
   const { pathname: path } = location;
   const itemCss = "p-5 mt-4 mb-4";
@@ -29,10 +29,18 @@ export const AppHeader : FC = () => {
             </Link>
           </li>
           <li className={`${itemCss} ml-2`}>
-            <ListIcon type="secondary" />
-            <span className="text text_type_main-small text_color_inactive ml-2">
-              Лента заказов
-            </span>
+            <Link to="/feed" className={styles.link}>
+              <ListIcon type={path === "/feed" ? "primary" : "secondary"} />
+              <span
+                className={`text text_type_main-small ml-2 ${
+                  path === "/feed"
+                    ? "text_color_primary"
+                    : "text_color_inactive"
+                }`}
+              >
+                Лента заказов
+              </span>
+            </Link>
           </li>
         </ul>
       </nav>

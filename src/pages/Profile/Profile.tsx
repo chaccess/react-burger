@@ -1,44 +1,21 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import styles from "./Profile.module.scss";
-import {
-  Button,
-  Input,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { FC, useCallback, useEffect, useState } from "react";
+import { createContext, FC, useCallback, useEffect } from "react";
+import { logout as logoutAction } from "../../services/actions/logout";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { RequestStatus } from "../../components/RequestStatus/RequestStatus";
-import { logout as logoutAction } from "../../services/actions/logout";
-import { changeUserInfo as changeUserInfoAction } from "../../services/actions/change-user-info";
-import { User } from "../../types/application-types/user";
-import { useForm } from "../../hooks/useForm";
+
+export const ProfileContext = createContext({
+  fixPosition: () => {},
+});
 
 export const Profile: FC = () => {
   const { pathname } = useLocation();
-  const { user, state, errorMessage } = useAppSelector((state) => ({
-    user: state.user.user as User,
-    state: state.user.state,
-    errorMessage: state.user.errorMessage,
-  }));
-  const { values, setValues, handleChange } = useForm<{
-    name: string;
-    email: string;
-    password: string;
-  }>({
-    name: user.name,
-    email: user.email,
-    password: "",
-  });
-  const { name, email, password } = values;
-  const [successMessage, setSuccessMessage] = useState<string>("");
   const dispatch = useAppDispatch();
-
-  if (user == null) {
-    throw new Error("Ошибка в коде");
-  }
+  const { state, errorMessage } = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    fixPosition();
+    setTimeout(fixPosition, 0);
     window.addEventListener("load", fixPosition);
     window.addEventListener("resize", fixPosition);
     return () => {
@@ -47,51 +24,35 @@ export const Profile: FC = () => {
     };
   }, []);
 
-  const reset = () => {
-    setValues({
-      name: user.name,
-      email: user.email,
-      password: "",
-    });
-  };
-
-  const isChanged =
-    user.name !== name || user.email !== email || password !== "";
-
   const logout = useCallback(() => {
     dispatch(logoutAction());
   }, [dispatch]);
 
-  const changeUserInfo = useCallback(() => {
-    setSuccessMessage("Данные пользователя обновлены");
-    dispatch(
-      changeUserInfoAction({
-        name,
-        email,
-        password,
-      })
-    );
-  }, [email, name, password, dispatch]);
-
   const fixPosition = () => {
-    const container = document.getElementsByClassName(
-      `${styles.content}`
-    )[0] as HTMLElement;
+    const containers = document.getElementsByClassName(`${styles.content}`);
+    if (containers.length === 0) {
+      return;
+    }
+
+    const container = containers[0] as HTMLElement;
     container.style.marginLeft = "0px";
     const body = document.getElementsByClassName(`${styles.body}`)[0];
     const rect = body.getBoundingClientRect();
     const currentLeft = rect.left;
     const targetLeft = (document.body.clientWidth - rect.width) / 2;
-    const delta = targetLeft - currentLeft;
+    let delta = targetLeft - currentLeft;
+    if (delta < 0) {
+      delta = 100;
+    }
     container.style.marginLeft = delta + "px";
   };
 
   return (
-    <>
+    <ProfileContext.Provider value={{ fixPosition }}>
       <RequestStatus
         state={state}
         errorMessage={errorMessage}
-        successMessage={successMessage}
+        successMessage={""}
       />
       <section className={`${styles.content} mt-20`}>
         <section className={`${styles.menu} pr-15`}>
@@ -134,63 +95,9 @@ export const Profile: FC = () => {
           </p>
         </section>
         <section className={`${styles.body}`}>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              changeUserInfo();
-            }}
-          >
-            <Input
-              value={name}
-              onChange={handleChange}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
-              placeholder={`Имя`}
-              icon="EditIcon"
-              onSubmit={changeUserInfo}
-              name="name"
-            />
-            <Input
-              value={email}
-              onChange={handleChange}
-              onPointerEnterCapture={undefined}
-              onPointerLeaveCapture={undefined}
-              placeholder={`Логин`}
-              extraClass="mt-6"
-              icon="EditIcon"
-              name="email"
-            />
-            <PasswordInput
-              value={password}
-              onChange={handleChange}
-              placeholder={`Пароль`}
-              extraClass="mt-6"
-              icon="EditIcon"
-              name="password"
-            />
-            {isChanged && (
-              <p>
-                <Button
-                  htmlType="button"
-                  type="secondary"
-                  size="medium"
-                  onClick={reset}
-                >
-                  Отмена
-                </Button>
-                <Button
-                  htmlType="submit"
-                  type="primary"
-                  size="medium"
-                  extraClass="mt-6"
-                >
-                  Сохранить
-                </Button>
-              </p>
-            )}
-          </form>
+          <Outlet />
         </section>
       </section>
-    </>
+    </ProfileContext.Provider>
   );
 };
