@@ -6,7 +6,7 @@ export type ConstructorIngredientsState = {
 	bun: IIngredient | null;
 	ingredients: IngredientWithUniqId[];
 };
-const initialState: ConstructorIngredientsState = {
+export const initialState: ConstructorIngredientsState = {
 	bun: null,
 	ingredients: [],
 };

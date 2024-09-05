@@ -7,7 +7,7 @@ import {
   socketPrivateMessage,
 } from "../actions/socket-actions";
 
-const initialState: OrdersFeedState = {
+export const initialState: OrdersFeedState = {
   orders: [],
   total: 0,
   totalToday: 0,

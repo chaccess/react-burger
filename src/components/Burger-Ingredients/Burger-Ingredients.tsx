@@ -14,6 +14,9 @@ export const BurgerIngredients: FC = () => {
   useEffect(() => {
     const scrollPaneElement =
       scrollPane.current !== null ? (scrollPane.current as HTMLElement) : null;
+    if (scrollPaneElement) {
+      scrollPaneElement.addEventListener("scroll", highLightTab);
+    }
     return () => {
       if (scrollPaneElement) {
         scrollPaneElement.removeEventListener("scroll", highLightTab);
@@ -21,17 +24,7 @@ export const BurgerIngredients: FC = () => {
     };
   }, []);
 
-  const scrollPaneExists = scrollPane.current !== null;
-
-  useEffect(() => {
-    const scrollPaneElement =
-      scrollPane.current !== null ? (scrollPane.current as HTMLElement) : null;
-    if (scrollPaneElement) {
-      scrollPaneElement.addEventListener("scroll", highLightTab);
-    }
-  }, [scrollPaneExists]);
-
-  function highLightTab() {
+  const highLightTab = () => {
     if (!scrollPane.current) {
       return;
     }
@@ -51,68 +44,85 @@ export const BurgerIngredients: FC = () => {
     }
     const value = nearestHeader.getAttribute("data-value") as FillingType;
     setCurrentTab(value);
-  }
-  const noop = () => {};
+  };
 
-  if (ingredients.length === 0) {
-    return <></>;
-  }
+  const scrollTo = (headerValue: FillingType) => {
+    if (!scrollPane.current) {
+      return;
+    }
+    const pane = scrollPane.current as HTMLElement;
+    const paneRect = pane.getBoundingClientRect();
+    const headers = pane.querySelectorAll("header");
+    let index = 0;
+    for (let i = 0; i < headers.length; i++) {
+      const header = headers[i];
+      if ((header.getAttribute("data-value") as FillingType) === headerValue) {
+        index = i;
+        break;
+      }
+    }
+    const header = headers[index];
+    const headerRect = header.getBoundingClientRect();
+    pane.scrollBy({
+      left: 0,
+      top: headerRect.y - paneRect.y,
+      behavior: "smooth",
+    });
+  };
 
   return (
-    <>
-      <section className={`mt-10 ${styles.constr}`}>
-        <header className={`mb-5 text text_type_main-large`}>
-          Соберите бургер
+    <section className={`mt-10 ${styles.constr}`}>
+      <header className={`mb-5 text text_type_main-large`}>
+        Соберите бургер
+      </header>
+      <nav className={`${styles.tabs} mb-10`}>
+        {[
+          { value: "bun" as FillingType, title: "Булки" },
+          { value: "sauce" as FillingType, title: "Соусы" },
+          { value: "main" as FillingType, title: "Начинки" },
+        ].map(({ value, title }) => (
+          <Tab
+            active={value === currentTab}
+            value={value}
+            onClick={() => scrollTo(value)}
+            key={value}
+          >
+            {title}
+          </Tab>
+        ))}
+      </nav>
+      <section className={styles["scroll-pane"]} ref={scrollPane}>
+        <header className="text text_type_main-medium" data-value="bun">
+          Булки
         </header>
-        <nav className={`${styles.tabs} mb-10`}>
-          {[
-            { value: "bun" as FillingType, title: "Булки" },
-            { value: "sauce" as FillingType, title: "Соусы" },
-            { value: "main" as FillingType, title: "Начинки" },
-          ].map(({ value, title }) => (
-            <Tab
-              active={value === currentTab}
-              value={value}
-              onClick={noop}
-              key={value}
-            >
-              {title}
-            </Tab>
-          ))}
-        </nav>
-        <section className={styles["scroll-pane"]} ref={scrollPane}>
-          <header className="text text_type_main-medium" data-value="bun">
-            Булки
-          </header>
-          <section className={`mt-6 mb-10 pl-4 ${styles.ingredients}`}>
-            {ingredients
-              .filter(({ ingredient }) => ingredient.type === "bun")
-              .map(({ ingredient: ing, count }) => (
-                <Ingredient ingredient={ing} count={count} key={ing._id} />
-              ))}
-          </section>
-          <header className="text text_type_main-medium" data-value="sauce">
-            Соусы
-          </header>
-          <section className={`mt-6 mb-10 pl-4 ${styles.ingredients}`}>
-            {ingredients
-              .filter(({ ingredient }) => ingredient.type === "sauce")
-              .map(({ ingredient: ing, count }) => (
-                <Ingredient ingredient={ing} count={count} key={ing._id} />
-              ))}
-          </section>
-          <header className="text text_type_main-medium" data-value="main">
-            Начинки
-          </header>
-          <section className={`mt-6 mb-10 pl-4 ${styles.ingredients}`}>
-            {ingredients
-              .filter(({ ingredient }) => ingredient.type === "main")
-              .map(({ ingredient: ing, count }) => (
-                <Ingredient ingredient={ing} count={count} key={ing._id} />
-              ))}
-          </section>
+        <section className={`mt-6 mb-10 pl-4 ${styles.ingredients}`}>
+          {ingredients
+            .filter(({ ingredient }) => ingredient.type === "bun")
+            .map(({ ingredient: ing, count }) => (
+              <Ingredient ingredient={ing} count={count} key={ing._id} />
+            ))}
+        </section>
+        <header className="text text_type_main-medium" data-value="sauce">
+          Соусы
+        </header>
+        <section className={`mt-6 mb-10 pl-4 ${styles.ingredients}`}>
+          {ingredients
+            .filter(({ ingredient }) => ingredient.type === "sauce")
+            .map(({ ingredient: ing, count }) => (
+              <Ingredient ingredient={ing} count={count} key={ing._id} />
+            ))}
+        </section>
+        <header className="text text_type_main-medium" data-value="main">
+          Начинки
+        </header>
+        <section className={`mt-6 mb-10 pl-4 ${styles.ingredients}`}>
+          {ingredients
+            .filter(({ ingredient }) => ingredient.type === "main")
+            .map(({ ingredient: ing, count }) => (
+              <Ingredient ingredient={ing} count={count} key={ing._id} />
+            ))}
         </section>
       </section>
-    </>
+    </section>
   );
 };

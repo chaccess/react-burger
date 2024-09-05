@@ -7,7 +7,7 @@ export type IngredientsState = {
 	success: boolean | null;
 	ingredients: IngredientWithCount[];
 };
-const initialState: IngredientsState = {
+export const initialState: IngredientsState = {
 	loading: false,
 	success: null,
 	ingredients: [],
@@ -65,6 +65,13 @@ export const ingredients = createSlice({
 				return { ingredient, count };
 			}),
 		}),
+		clearCounts: (state: IngredientsState, action: PayloadAction<void>) => ({
+			...state,
+			ingredients: state.ingredients.map(({ ingredient }) => ({
+				count: 0,
+				ingredient,
+			})),
+		}),
 	},
 	extraReducers: (builder) => {
 		builder
@@ -87,5 +94,5 @@ export const ingredients = createSlice({
 	},
 });
 
-export const { decreaseItem, increaseItem, removeBun, setBun } =
+export const { decreaseItem, increaseItem, removeBun, setBun, clearCounts } =
 	ingredients.actions;

@@ -4,5 +4,5 @@ export type OrderResponse = {
 		number: number;
 	};
 	success: true;
-	message?: string;
+	message: string;
 };

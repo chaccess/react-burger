@@ -14,16 +14,18 @@ export type UserState = {
   state: RequestState;
   errorMessage: string;
   successMessage: string;
+  changeUserInfoState: RequestState;
   passwordResetState: RequestState;
   changePasswordState: RequestState;
   registerState: RequestState;
 };
 
-const initialState: UserState = {
+export const initialState: UserState = {
   user: null,
   state: "init",
   errorMessage: "",
   successMessage: "",
+  changeUserInfoState: "init",
   passwordResetState: "init",
   changePasswordState: "init",
   registerState: "init",
