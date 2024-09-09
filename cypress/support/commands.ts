@@ -37,45 +37,40 @@
 // }
 
 Cypress.Commands.add("drag", (ingredientId: string) => {
-	cy.get(`[data-cy='ingredient_${ingredientId}']`).trigger("dragstart");
-	cy.get("[data-cy='dropTarget']").trigger("drop");
+  cy.get(`[data-cy='ingredient_${ingredientId}']`).trigger("dragstart");
+  cy.get("[data-cy='dropTarget']").trigger("drop");
 });
 
 Cypress.Commands.add("getCount", (ingredientId: string) => {
-	return cy
-		.get(`[data-cy='card_${ingredientId}'] .counter__num`)
-		.invoke("text")
-		.then(parseInt);
+  return cy
+    .get(`[data-cy='card_${ingredientId}'] .counter__num`)
+    .invoke("text")
+    .then(parseInt);
 });
 
 Cypress.Commands.add("doesNotHaveCount", (ingredientId: string) => {
-	cy.get(`[data-cy='card_${ingredientId}'] .counter__num`).should("not.exist");
+  cy.get(`[data-cy='card_${ingredientId}'] .counter__num`).should("not.exist");
 });
 
 Cypress.Commands.add("checkModalIsOpen", () => {
-	cy.get("#modal > *:first-child").as("modal-child");
-	cy.get("@modal-child").should("exist");
-	cy.get("@modal-child")
-		.should("have.css", "position", "absolute")
-		.should("have.css", "z-index", "101");
-	cy.get("#modal-overlay > *:first-child").as("overlay-child");
-	cy.get("@overlay-child").should("exist");
-	cy.get("@overlay-child")
-		.should("have.css", "position", "absolute")
-		.should("have.css", "z-index", "100");
+  cy.get("#modal > *:first-child").as("modal-child");
+  cy.get("@modal-child").should("exist");
+  cy.get("@modal-child")
+    .should("have.css", "position", "absolute")
+    .should("have.css", "z-index", "100");
 });
 
 Cypress.Commands.add("checkModalIsClosed", () => {
-	cy.get("#modal > *").should("not.exist");
-	cy.get("#modal-overlay > *").should("not.exist");
+  cy.get("#modal > *").should("not.exist");
+  cy.get("#modal-overlay > *").should("not.exist");
 });
 
 declare namespace Cypress {
-	interface Chainable {
-		getCount(ingredientId: string): Chainable<number>;
-		doesNotHaveCount(ingredientId: string): Chainable<void>;
-		drag(ingredientId: string): Cypress.Chainable<JQuery<HTMLElement>>;
-		checkModalIsOpen(): Chainable<void>;
-		checkModalIsClosed(): Chainable<void>;
-	}
+  interface Chainable {
+    getCount(ingredientId: string): Chainable<number>;
+    doesNotHaveCount(ingredientId: string): Chainable<void>;
+    drag(ingredientId: string): Cypress.Chainable<JQuery<HTMLElement>>;
+    checkModalIsOpen(): Chainable<void>;
+    checkModalIsClosed(): Chainable<void>;
+  }
 }

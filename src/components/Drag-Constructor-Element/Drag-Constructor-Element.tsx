@@ -89,7 +89,10 @@ export const DragConstructorElement: FC<DragConstructorElementPropTypes> = ({
   const dashedClass = isDragging ? styles.dashed : "";
 
   return (
-    <li className={`${styles.ingredient} ${dashedClass} mb-4`}>
+    <li
+      className={`${styles.ingredient} ${dashedClass} mb-4`}
+      data-cy="constructor-item"
+    >
       <section className={styles.drag} ref={ref} data-handler-id={handlerId}>
         <DragIcon type="primary" />
       </section>

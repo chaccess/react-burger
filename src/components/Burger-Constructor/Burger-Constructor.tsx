@@ -109,20 +109,24 @@ export const BurgerConstructor: FC = () => {
       <section
         className={`${styles.burger} ${additionalClass}`}
         ref={dropTarget}
+        data-cy="dropTarget"
       >
         {bun && (
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`${bun.name} (верх)`}
-            price={bun.price}
-            thumbnail={bun.imageMobile}
-            extraClass="ml-8"
-          />
+          <div data-cy="bun-top">
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={`${bun.name} (верх)`}
+              price={bun.price}
+              thumbnail={bun.imageMobile}
+              extraClass="ml-8"
+            />
+          </div>
         )}
 
         <ul
           id="burger-constructor-list"
+          data-cy="constructor"
           className={`${styles.list} scroll-pane custom-scroll`}
         >
           {ingredients.map(({ ingredient, uniqId }, index) => {
@@ -138,14 +142,16 @@ export const BurgerConstructor: FC = () => {
           })}
         </ul>
         {bun && (
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`${bun.name} (низ)`}
-            price={bun.price}
-            thumbnail={bun.imageMobile}
-            extraClass="ml-8"
-          />
+          <div data-cy="bun-bottom">
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={`${bun.name} (низ)`}
+              price={bun.price}
+              thumbnail={bun.imageMobile}
+              extraClass="ml-8"
+            />
+          </div>
         )}
       </section>
       <footer>
@@ -159,6 +165,7 @@ export const BurgerConstructor: FC = () => {
           size="medium"
           onClick={createOrder}
           disabled={bun === null}
+          data-cy="order"
         >
           Оформить заказ
         </Button>

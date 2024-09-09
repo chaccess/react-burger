@@ -30,25 +30,35 @@ export const IngredientDetails: FC = () => {
       <section className={`${styles.image} mb-4`}>
         <img src={imageLarge} alt={name} />
       </section>
-      <p className="text text_type_main-medium mb-8">{name}</p>
+      <p className="text text_type_main-medium mb-8" data-cy="ingredient_name">
+        {name}
+      </p>
       <ul
         className={`${styles.parts} text text_type_main-default text_color_inactive mb-15`}
       >
         <li className="mr-5">
           <p>Калории, ккал</p>
-          <p className={digitClass}>{calories}</p>
+          <p className={digitClass} data-cy="calories">
+            {calories}
+          </p>
         </li>
         <li className="mr-5">
           <p>Белки, г</p>
-          <p className={digitClass}>{proteins}</p>
+          <p className={digitClass} data-cy="proteins">
+            {proteins}
+          </p>
         </li>
         <li className="mr-5">
           <p>Жиры, г</p>
-          <p className={digitClass}>{fat}</p>
+          <p className={digitClass} data-cy="fat">
+            {fat}
+          </p>
         </li>
         <li>
           <p>Углеводы, г</p>
-          <p className={digitClass}>{carbohydrates}</p>
+          <p className={digitClass} data-cy="carbohydrates">
+            {carbohydrates}
+          </p>
         </li>
       </ul>
     </section>

@@ -34,7 +34,8 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "deploy-yandex": "npm run build && scp -r ./build/* chaccess@51.250.38.32:/var/www/chaccess-burger.nomorepartiesco.ru/html"
+    "deploy-yandex": "npm run build && scp -r ./build/* chaccess@51.250.38.32:/var/www/chaccess-burger.nomorepartiesco.ru/html",
+    "cypress": "cypress open cache clear"
   },
   "eslintConfig": {
     "extends": [

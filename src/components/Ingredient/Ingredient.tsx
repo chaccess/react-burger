@@ -24,7 +24,11 @@ export const Ingredient: FC<IngredientPropTypes> = ({ ingredient, count }) => {
 
   return (
     <>
-      <section className={`${styles.ingredient} mr-6`} ref={dragRef}>
+      <section
+        className={`${styles.ingredient} mr-6`}
+        ref={dragRef}
+        data-cy={`card_${ingredient._id}`}
+      >
         {count > 0 && <Counter count={count} size="default" extraClass="m-1" />}
         <img
           draggable={false}
@@ -51,6 +55,7 @@ export const Ingredient: FC<IngredientPropTypes> = ({ ingredient, count }) => {
         </p>
         <p
           className={`${styles.name} text text_type_main-small ${styles.name}`}
+          data-cy={`ingredient_${ingredient._id}`}
         >
           {name}
         </p>
