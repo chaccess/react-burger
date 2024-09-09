@@ -1,6 +1,6 @@
 # Ссылки на сайт
 
-gh-pages: https://chaccess.github.io/react-burger/
+gh-pages: https://chaccess.github.io/react-burger/ \
 yandex: https://chaccess-burger.nomorepartiesco.ru
 
 # Getting Started with Create React App
