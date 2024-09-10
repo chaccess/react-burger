@@ -20,7 +20,7 @@ export const RequestStatus: FC<RequestStatusPropTypes> = ({
       {state === "init" && <></>}
       {state === "pending" && (
         <Modal title="" closeModal={() => {}} hideClose={true}>
-          <div className={`${styles.loading}`}>
+          <div className={`${styles.loading}`} data-cy="loading">
             <p className="text text_type_main-medium p-15">Загрузка...</p>
           </div>
         </Modal>

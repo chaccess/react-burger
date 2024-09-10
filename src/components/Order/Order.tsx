@@ -97,12 +97,12 @@ export const Order: FC<OrderPropTypes> = ({ isInModal = true }) => {
   }
 
   if (!order) {
-    if (order_) {
-      order = order_.orders[0];
-    } else if (!loading && !error) {
-      dispatch(getOrder(number));
-    }
-  }
+		if (order_) {
+			order = order_;
+		} else if (!loading && !error) {
+			dispatch(getOrder(number));
+		}
+	}
 
   type map = {
     [key: string]: number;

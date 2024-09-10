@@ -63,13 +63,21 @@ export const linkHandler = (
   e: SyntheticEvent<HTMLAnchorElement>,
   callback: () => void
 ) => {
+  //чтобы не было перехода по ссылке
   e.preventDefault();
   callback();
 };
 
 export const convert = (ing: IIngredientFromServer): IIngredient => {
   return {
-    ...ing,
+    _id: ing._id,
+    calories: ing.calories,
+    carbohydrates: ing.carbohydrates,
+    fat: ing.fat,
+    image: ing.image,
+    name: ing.name,
+    price: ing.price,
+    proteins: ing.proteins,
     type: ing.type === "bun" ? "bun" : ing.type === "sauce" ? "sauce" : "main",
     imageLarge: ing.image_large,
     imageMobile: ing.image_mobile,
@@ -92,7 +100,7 @@ type RequestOptions = {
 
 const checkResponse = (response: AxiosResponse<ApplicationResponse>) => {
   if (response.status !== HttpStatusCode.Ok) {
-    return Promise.reject<string>(`Ошибка ${response.status}`);
+    return Promise.reject<string>(response.data.message);
   }
   if (!response.data.success) {
     return Promise.reject<string>(`Ошибка ${response.data.message || ""}`);
@@ -113,11 +121,26 @@ export const request = async <T extends ApplicationResponse>(
     });
   }
 
-  const response = await axios<ApplicationResponse>(url, {
-    method: !options ? "GET" : options.method,
-    data: options?.body,
-    headers: headers,
-  });
+  let response: AxiosResponse<ApplicationResponse>;
+  const method = options?.method || "GET";
+  switch (method) {
+    case "GET":
+      response = await axios.get<ApplicationResponse>(url, {
+        headers,
+      });
+      break;
+    case "POST":
+      response = await axios.post<ApplicationResponse>(url, options?.body, {
+        headers,
+      });
+      break;
+    case "PATCH":
+      response = await axios.patch<ApplicationResponse>(url, options?.body, {
+        headers,
+      });
+      break;
+  }
+
   return (await checkResponse(response)) as T;
 };
 
